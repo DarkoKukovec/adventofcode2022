@@ -4,7 +4,7 @@
   "description": "This is my attempt at the [Advent of Code 2022](https://adventofcode.com/2022) challenges by using Rust and wasm.",
   "main": "index.js",
   "scripts": {
-    "build": "wasm-pack build && cd www && npm run build && cd .. && git add .",
+    "build": "wasm-pack build && cd www && npm run build && cd .. && rm -rf docs && mv www/dist docs && git add .",
     "prepare": "husky install"
   },
   "author": "",
