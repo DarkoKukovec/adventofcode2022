@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hello adventofcode2022!</title>
+    <style type="text/css">
+      body {
+        font-family: sans-serif;
+      }
+      input[type=radio], input[type=radio] + div {
+        display: none;
+      }
+      label {
+        cursor: pointer;
+      }
+      input[type=radio]:checked + div {
+        display: block;
+      }
+      .input {
+        display: block;
+        margin: 0.5em 0;
+      }
+      .output {
+        background-color: #eee;
+        padding: 1em;
+        margin: 1em 0;
+        font-family: 'Courier New', Courier, monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>adventofcode2022!</h1>
+    <h2>Chapters</h2>
+    <section>
+      <label for="chapter-test"><h3>Test</h3></label>
+      <input type="radio" name="chapter" value="test" id="chapter-test" />
+      <div>
+        <div>
+          Input: <textarea class="input" id="input-test">World</textarea>
+        </div>
+        <div>
+          Output: <pre class="output" id="output-test"></pre>
+        </div>
+        <button class="exec" data-id="test">Execute test</button>
+      </div>
+    </section>
+    <script src="./bootstrap.js"></script>
+  </body>
+</html>

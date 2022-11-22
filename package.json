@@ -1,0 +1,15 @@
+{
+  "name": "adventofcode2022",
+  "version": "1.0.0",
+  "description": "This is my attempt at the [Advent of Code 2022](https://adventofcode.com/2022) challenges by using Rust and wasm.",
+  "main": "index.js",
+  "scripts": {
+    "build": "wasm-pack build && cd www && npm run build && cd .. && git add .",
+    "prepare": "husky install"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "husky": "^8.0.2"
+  }
+}
