@@ -7,36 +7,55 @@
       body {
         font-family: sans-serif;
       }
-      input[type=radio], input[type=radio] + div {
-        display: none;
-      }
-      label {
+      h3 {
         cursor: pointer;
-      }
-      input[type=radio]:checked + div {
-        display: block;
+        color: #aaa;
       }
       .input {
         display: block;
         margin: 0.5em 0;
+        width: 90%;
+        background-color: #eee;
+        padding: 1em;
+        font-family: 'Courier New', Courier, monospace;
+        border: none;
       }
       .output {
         background-color: #eee;
         padding: 1em;
-        margin: 1em 0;
+        margin: 0.5em 0;
         font-family: 'Courier New', Courier, monospace;
+        height: calc(100% - 50%);
+      }
+      section > div {
+        display: none;
+      }
+      .opened > div {
+        display: block;
+      }
+
+      .opened > h3 {
+        color: #000;
+      }
+      .wrap {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+      }
+      .wrap > div {
+        flex: 1;
       }
     </style>
   </head>
   <body>
     <h1>adventofcode2022!</h1>
     <h2>Chapters</h2>
-    <section>
-      <label for="chapter-1"><h3>1</h3></label>
-      <input type="radio" name="chapter" value="1" id="chapter-1" />
+    <section data-id="1">
+      <h3></h3>
       <div>
-        <div>
-          Input: <textarea class="input" id="input-1">1000
+        <div class="wrap">
+          <div>
+            Input: <textarea class="input">1000
 2000
 3000
 
@@ -50,24 +69,26 @@
 9000
 
 10000</textarea>
+          </div>
+          <div>
+            Output: <pre class="output"></pre>
+          </div>
         </div>
-        <div>
-          Output: <pre class="output" id="output-1"></pre>
-        </div>
-        <button class="exec" data-id="1">Execute 1</button>
+        <button class="exec">Execute</button>
       </div>
     </section>
-    <section>
-      <label for="chapter-test"><h3>Test</h3></label>
-      <input type="radio" name="chapter" value="test" id="chapter-test" />
+    <section data-id="test">
+      <h3></h3>
       <div>
-        <div>
-          Input: <textarea class="input" id="input-test">World</textarea>
+        <div class="wrap">
+          <div>
+            Input: <textarea class="input">World</textarea>
+          </div>
+          <div>
+            Output: <pre class="output"></pre>
+          </div>
         </div>
-        <div>
-          Output: <pre class="output" id="output-test"></pre>
-        </div>
-        <button class="exec" data-id="test">Execute test</button>
+        <button class="exec">Execute test</button>
       </div>
     </section>
     <script src="./bootstrap.js"></script>
