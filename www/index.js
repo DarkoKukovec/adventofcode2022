@@ -26,9 +26,10 @@ document.querySelector('h3').parentElement.classList.add('opened');
 
 document.querySelectorAll('.exec').forEach((el) => {
   el.addEventListener('click', () => {
+    const dataIndex = document.querySelector('[type=radio]:checked').value === 'test' ? 0 : 1;
     const target = el.parentElement.parentElement;
     const id = target.getAttribute('data-id');
-    const input = target.querySelector('.input').value;
+    const input = target.querySelector('.input').value || require(`./inputs/${id}.json`)[dataIndex];
     const output = target.querySelector('.output');
     el.setAttribute('disabled', 'disabled');
     output.innerHTML = wasm[`exec_${id}`](input) || 'Nothing to execute';
