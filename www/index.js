@@ -58,7 +58,10 @@ document.querySelectorAll('.exec').forEach((el) => {
 		const output = target.querySelector('.output');
 		el.setAttribute('disabled', 'disabled');
 		try {
+			const start = performance.now();
 			output.innerHTML = wasm[`exec_${id}`](input) || 'Nothing to execute';
+			const end = performance.now();
+			output.innerHTML += `<br />Executed in ${(end - start).toFixed(1)}ms`;
 		} catch (e) {
 			output.innerHTML = e;
 		}
