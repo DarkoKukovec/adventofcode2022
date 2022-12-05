@@ -4,7 +4,7 @@ pub fn exec(input: &str) -> String {
         .map(|x| x.split("\n").map(super::utils::str_to_i32))
         .map(|x| x.sum())
         .collect();
-    
+
     calories.sort();
     calories.reverse();
 

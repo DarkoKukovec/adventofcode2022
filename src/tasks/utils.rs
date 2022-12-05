@@ -6,6 +6,6 @@ pub fn str_to_i32(string: &str) -> i32 {
 }
 
 #[wasm_bindgen]
-extern {
+extern "C" {
     pub fn log(s: &str);
 }
