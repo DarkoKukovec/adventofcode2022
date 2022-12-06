@@ -55,7 +55,7 @@ pub fn exec(input: &str) -> String {
     // First part
     let mut stack_single = stacks.clone();
     for next_move in moves.clone() {
-        for i in 0..next_move.0 {
+        for _i in 0..next_move.0 {
             let item = stack_single.get_mut(&next_move.1).unwrap().pop().unwrap();
             stack_single.get_mut(&next_move.2).unwrap().push(item);
         }
@@ -69,7 +69,7 @@ pub fn exec(input: &str) -> String {
     let mut stack_multi = stacks.clone();
     for next_move in moves.clone() {
         let mut items: Vec<&str> = Vec::new();
-        for i in 0..next_move.0 {
+        for _i in 0..next_move.0 {
             let item = stack_multi.get_mut(&next_move.1).unwrap().pop().unwrap();
             items.push(item);
         }

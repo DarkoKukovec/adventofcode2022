@@ -2,7 +2,7 @@ import * as wasm from 'adventofcode2022';
 
 window.log = console.log.bind(console);
 
-const maxDay = 5;
+const maxDay = 6;
 
 document.querySelector('.app').innerHTML = Array.from({ length: maxDay + 1 })
 	.map(
