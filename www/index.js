@@ -2,7 +2,7 @@ import * as wasm from 'adventofcode2022';
 
 window.log = console.log.bind(console);
 
-const maxDay = 10;
+const maxDay = 11;
 
 document.querySelector('.app').innerHTML = Array.from({ length: maxDay + 1 })
 	.map(
@@ -59,7 +59,7 @@ document.querySelectorAll('.exec').forEach((el) => {
 		el.setAttribute('disabled', 'disabled');
 		try {
 			const start = performance.now();
-			output.innerHTML = wasm[`exec_${id}`](input) || 'Nothing to execute';
+			output.innerHTML = input ? wasm[`exec_${id}`](input) || 'Nothing to execute' : 'Missing input';
 			const end = performance.now();
 			output.innerHTML += `\n\nExecuted in ${(end - start).toFixed(1)}ms`;
 		} catch (e) {
