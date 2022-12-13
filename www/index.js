@@ -4,27 +4,30 @@ window.log = console.log.bind(console);
 
 const maxDay = 13;
 
-document.querySelector('.app').innerHTML = Array.from({ length: maxDay + 1 })
-	.map(
-		(_, day) => `<section data-id="${day || 'test'}" class="${day === maxDay ? 'opened' : ''}">
-  <h3>Day ${day || 'test'}</h3>
-  <div>
-    <div class="wrap">
-      <div>
-        Input: <textarea class="input"></textarea>
-      </div>
-      <div>
-        Output: <pre class="output"></pre>
-      </div>
-    </div>
-    <button class="exec" data-input="input">Execute input</button>
-    <button class="exec" data-input="test">Execute test</button>
-    <button class="exec" data-input="task">Execute task</button>
-  </div>
-  </section>`,
-	)
-	.reverse()
-	.join('');
+const days = Array.from({ length: maxDay + 1 })
+	.map((_, day) => {
+		const id = day || 'all';
+		const title = day ? `Day ${id}` : 'All days';
+		return `<section data-id="${id}" class="${day === maxDay ? 'opened' : ''}">
+			<h3>${title}</h3>
+			<div>
+				<div class="wrap">
+					${id === 'all' ? '' : '<div>Input: <textarea class="input"></textarea></div>'}
+					<div>
+						Output: <pre class="output"></pre>
+					</div>
+				</div>
+				${id === 'all' ? '' : '<button class="exec" data-input="input">Execute input</button>'}
+				<button class="exec" data-input="test">Execute test</button>
+				<button class="exec" data-input="task">Execute task</button>
+			</div>
+			</section>`;
+	})
+	.reverse();
+
+days.unshift(days.pop());
+
+document.querySelector('.app').innerHTML = days.join('');
 
 document.querySelectorAll('.input').forEach((el) => {
 	const lines = el.value.split('\n').length;
@@ -44,27 +47,46 @@ document.querySelectorAll('h3').forEach((el) => {
 	});
 });
 
+function runDay(el, output, dataType, id) {
+	const start = performance.now();
+	const input =
+		dataType === 'input'
+			? el.parentElement.querySelector('.input').value
+			: dataType === 'test'
+			? require(`./inputs/${id}.json`)[0]
+			: require(`./inputs/${id}.json`)[1];
+	el.setAttribute('disabled', 'disabled');
+	try {
+		output.innerHTML += input ? wasm[`exec_${id}`](input) || 'Nothing to execute' : 'Missing input';
+	} catch (e) {
+		output.innerHTML += e;
+	}
+	output.innerHTML += '\n\n';
+	return performance.now() - start;
+}
+
 document.querySelectorAll('.exec').forEach((el) => {
 	el.addEventListener('click', () => {
 		const target = el.parentElement.parentElement;
+		const output = target.querySelector('.output');
 		const dataType = el.getAttribute('data-input');
 		const id = target.getAttribute('data-id');
-		const input =
-			dataType === 'input'
-				? el.parentElement.querySelector('.input').value
-				: dataType === 'test'
-				? require(`./inputs/${id}.json`)[0]
-				: require(`./inputs/${id}.json`)[1];
-		const output = target.querySelector('.output');
-		el.setAttribute('disabled', 'disabled');
-		try {
-			const start = performance.now();
-			output.innerHTML = input ? wasm[`exec_${id}`](input) || 'Nothing to execute' : 'Missing input';
-			const end = performance.now();
-			output.innerHTML += `\n\nExecuted in ${(end - start).toFixed(1)}ms`;
-		} catch (e) {
-			output.innerHTML = e;
+		output.innerHTML = '';
+		const start = performance.now();
+		if (id === 'all') {
+			const times = [];
+			for (let i = 1; i <= maxDay; i++) {
+				output.innerHTML += `Day ${i}:\n`;
+				times.push(runDay(el, output, dataType, i));
+			}
+			const maxDuration = Math.max(...times);
+			const maxDurationDay = times.indexOf(maxDuration) + 1;
+			output.innerHTML += `\n\nDay ${maxDurationDay} was the slowest (${maxDuration.toFixed(1)}ms)`;
+		} else {
+			runDay(el, output, dataType, id);
 		}
+		const end = performance.now();
+		output.innerHTML += `\n\nExecuted in ${(end - start).toFixed(1)}ms`;
 		el.removeAttribute('disabled');
 	});
 });
