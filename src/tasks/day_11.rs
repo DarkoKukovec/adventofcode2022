@@ -1,26 +1,42 @@
 use std::collections::HashMap;
 
 #[derive(Clone)]
+enum OpType {
+    Num(u128),
+    Worry,
+}
+
+#[derive(Clone)]
 struct Monkey {
     num: i32,
     items: Vec<u128>,
-    op: Vec<String>,
+    op: (OpType, String, OpType),
     test: u128,
     on_true: i32,
     on_false: i32,
     inspections: u128,
 }
 
-fn calculate_worry(item: u128, op: &Vec<String>, div: u128, modulo: u128) -> u128 {
-    let mut worry = item;
-    let a = op[0].parse::<u128>().unwrap_or(worry);
-    let b = op[2].parse::<u128>().unwrap_or(worry);
-    match op[1].as_str() {
-        "+" => worry = a + b,
-        _ => worry = a * b,
+fn calculate_worry(worry: u128, op: &(OpType, String, OpType), div: u128, modulo: u128) -> u128 {
+    let a = match op.0 {
+        OpType::Num(x) => x,
+        OpType::Worry => worry,
+    };
+    let b = match op.2 {
+        OpType::Num(x) => x,
+        OpType::Worry => worry,
+    };
+
+    let worry = match op.1.as_str() {
+        "+" => a + b,
+        _ => a * b,
+    };
+
+    if div != 1 {
+        return (worry as f64 / div as f64).floor() as u128 % modulo;
     }
 
-    return (worry as f64 / div as f64).floor() as u128 % modulo;
+    return worry % modulo;
 }
 
 fn runner(mut monkeys: HashMap<i32, Monkey>, order: &Vec<i32>, rounds: i32, div: u128) -> u128 {
@@ -118,7 +134,17 @@ pub fn exec(input: &str) -> String {
             return Monkey {
                 num,
                 items,
-                op,
+                op: (
+                    match op[0].parse::<u128>() {
+                        Ok(x) => OpType::Num(x),
+                        Err(_) => OpType::Worry,
+                    },
+                    op[1].to_string(),
+                    match op[2].parse::<u128>() {
+                        Ok(x) => OpType::Num(x),
+                        Err(_) => OpType::Worry,
+                    },
+                ),
                 test,
                 on_true,
                 on_false,

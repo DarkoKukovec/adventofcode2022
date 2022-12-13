@@ -81,12 +81,12 @@ document.querySelectorAll('.exec').forEach((el) => {
 			}
 			const maxDuration = Math.max(...times);
 			const maxDurationDay = times.indexOf(maxDuration) + 1;
-			output.innerHTML += `\n\nDay ${maxDurationDay} was the slowest (${maxDuration.toFixed(1)}ms)`;
+			output.innerHTML += `\nDay ${maxDurationDay} was the slowest (${maxDuration.toFixed(1)}ms)`;
 		} else {
 			runDay(el, output, dataType, id);
 		}
 		const end = performance.now();
-		output.innerHTML += `\n\nExecuted in ${(end - start).toFixed(1)}ms`;
+		output.innerHTML += `\nExecuted in ${(end - start).toFixed(1)}ms`;
 		el.removeAttribute('disabled');
 	});
 });
