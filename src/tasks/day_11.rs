@@ -26,7 +26,7 @@ fn calculate_worry(item: u128, op: &Vec<String>, div: u128, modulo: u128) -> u12
 fn runner(mut monkeys: HashMap<i32, Monkey>, order: &Vec<i32>, rounds: i32, div: u128) -> u128 {
     let modulo: u128 = monkeys.values().map(|m| m.test).product();
     for _round in 0..rounds {
-        for monkey_id in order.clone() {
+        for monkey_id in order {
             loop {
                 let mut monkey = monkeys.get_mut(&monkey_id).unwrap();
                 if monkey.items.len() == 0 {
