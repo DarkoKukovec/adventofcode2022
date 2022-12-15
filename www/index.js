@@ -2,7 +2,7 @@ import * as wasm from 'adventofcode2022';
 
 window.log = console.log.bind(console);
 
-const maxDay = 14;
+const maxDay = 15;
 
 const days = Array.from({ length: maxDay + 1 })
 	.map((_, day) => {
