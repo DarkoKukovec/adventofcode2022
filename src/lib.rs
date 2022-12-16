@@ -81,3 +81,8 @@ pub fn exec_14(input: &str) -> String {
 pub fn exec_15(input: &str) -> String {
     tasks::day_15::exec(input)
 }
+
+#[wasm_bindgen]
+pub fn exec_16(input: &str) -> String {
+    tasks::day_16::exec(input)
+}
