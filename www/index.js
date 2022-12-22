@@ -2,7 +2,8 @@ import * as wasm from 'adventofcode2022';
 
 window.log = console.log.bind(console);
 
-const maxDay = 16;
+const wip = [17, 18, 19, 21, 22];
+const maxDay = 22;
 
 const days = Array.from({ length: maxDay + 1 })
 	.map((_, day) => {
@@ -23,6 +24,7 @@ const days = Array.from({ length: maxDay + 1 })
 			</div>
 			</section>`;
 	})
+	.filter((_, day) => !wip.includes(day))
 	.reverse();
 
 days.unshift(days.pop());
@@ -48,6 +50,10 @@ document.querySelectorAll('h3').forEach((el) => {
 });
 
 function runDay(el, output, dataType, id) {
+	if (wip.includes(id)) {
+		output.innerHTML += 'Day is still in progress\n\n';
+		return;
+	}
 	const start = performance.now();
 	const input =
 		dataType === 'input'

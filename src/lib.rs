@@ -86,3 +86,33 @@ pub fn exec_15(input: &str) -> String {
 pub fn exec_16(input: &str) -> String {
     tasks::day_16::exec(input)
 }
+
+#[wasm_bindgen]
+pub fn exec_17(input: &str) -> String {
+    tasks::day_17::exec(input)
+}
+
+#[wasm_bindgen]
+pub fn exec_18(input: &str) -> String {
+    tasks::day_18::exec(input)
+}
+
+#[wasm_bindgen]
+pub fn exec_19(input: &str) -> String {
+    tasks::day_19::exec(input)
+}
+
+#[wasm_bindgen]
+pub fn exec_20(input: &str) -> String {
+    tasks::day_20::exec(input)
+}
+
+#[wasm_bindgen]
+pub fn exec_21(input: &str) -> String {
+    tasks::day_21::exec(input)
+}
+
+#[wasm_bindgen]
+pub fn exec_22(input: &str) -> String {
+    tasks::day_22::exec(input)
+}

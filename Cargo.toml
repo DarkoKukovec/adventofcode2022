@@ -3,6 +3,7 @@ name = "adventofcode2022"
 version = "0.1.0"
 authors = ["Darko Kukovec <adventofcode2022@kuk.is>"]
 edition = "2018"
+publish = false
 
 [lib]
 crate-type = ["cdylib", "rlib"]
