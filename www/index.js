@@ -3,7 +3,7 @@ import * as wasm from 'adventofcode2022';
 window.log = console.log.bind(console);
 
 const wip = [17, 18, 19, 21, 22];
-const maxDay = 23;
+const maxDay = 24;
 
 const days = Array.from({ length: maxDay + 1 })
 	.map((_, day) => {
