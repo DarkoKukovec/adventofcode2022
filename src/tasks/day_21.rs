@@ -5,22 +5,30 @@ enum MonkeyValue {
     Operation((String, char, String)),
 }
 
-fn get_value(name: &str, map: &HashMap<&str, MonkeyValue>) -> i128 {
+fn get_value(name: &str, map: &HashMap<&str, MonkeyValue>, search_humn: bool) -> Option<i128> {
+    if search_humn && name == "humn" {
+        return None;
+    }
     return match map.get(name).unwrap() {
-        MonkeyValue::Number(num) => *num,
+        MonkeyValue::Number(num) => Some(*num),
         MonkeyValue::Operation((a, op, b)) => {
-            let a = get_value(a, map);
-            let b = get_value(b, map);
+            let a = get_value(a, map, search_humn);
+            let b = get_value(b, map, search_humn);
+            if a.is_none() || b.is_none() {
+                return None;
+            }
+            let a = a.unwrap();
+            let b = b.unwrap();
             match op {
-                '+' => a + b,
-                '-' => a - b,
-                '*' => a * b,
-                '/' => a / b,
+                '+' => Some(a + b),
+                '-' => Some(a - b),
+                '*' => Some(a * b),
+                '/' => Some(a / b),
                 '=' => {
                     if a == b {
-                        1
+                        Some(1)
                     } else {
-                        0
+                        Some(0)
                     }
                 }
                 _ => panic!("Unknown operation"),
@@ -29,8 +37,54 @@ fn get_value(name: &str, map: &HashMap<&str, MonkeyValue>) -> i128 {
     };
 }
 
+fn get_new_a_expected(expected: i128, b: i128, op: char) -> i128 {
+    match op {
+        '+' => expected - b,
+        '-' => expected + b,
+        '*' => expected / b,
+        '/' => expected * b,
+        '=' => b,
+        _ => panic!("Unknown operation"),
+    }
+}
+
+fn get_new_b_expected(expected: i128, a: i128, op: char) -> i128 {
+    match op {
+        '+' => expected - a,
+        '-' => a - expected,
+        '*' => expected / a,
+        '/' => a / expected,
+        '=' => a,
+        _ => panic!("Unknown operation"),
+    }
+}
+
+fn get_humn(name: &str, map: &HashMap<&str, MonkeyValue>, expected: i128) -> Option<i128> {
+    if name == "humn" {
+        return Some(expected);
+    }
+    return match map.get(name).unwrap() {
+        MonkeyValue::Number(num) => Some(*num),
+        MonkeyValue::Operation((a_name, op, b_name)) => {
+            let a = get_value(a_name, map, true);
+            let b = get_value(b_name, map, true);
+            if a.is_none() && b.is_none() {
+                panic!("Too many humn found");
+            }
+            if a.is_some() && b.is_some() {
+                panic!("No humn found");
+            }
+            if a.is_none() {
+                get_humn(a_name, map, get_new_a_expected(expected, b.unwrap(), *op))
+            } else {
+                get_humn(b_name, map, get_new_b_expected(expected, a.unwrap(), *op))
+            }
+        }
+    };
+}
+
 pub fn exec(input: &str) -> String {
-    let input = input
+    let mut input = input
         .lines()
         .map(|x| {
             let mut parts = x.split(": ");
@@ -55,9 +109,17 @@ pub fn exec(input: &str) -> String {
             h
         });
 
-    let root_value = get_value("root", &input);
+    let root_value = get_value("root", &input, false);
 
-    let humn_value = 0;
+    let root = input.get("root").unwrap();
+    let new_root = match root {
+        MonkeyValue::Number(_) => panic!("Root is a number"),
+        MonkeyValue::Operation((a, _op, b)) => {
+            MonkeyValue::Operation((a.to_string(), '=', b.to_string()))
+        }
+    };
+    input.insert("root", new_root);
+    let humn_value = get_humn("root", &input, 1).unwrap();
 
-    return format!("{}, {}", root_value, humn_value);
+    return format!("{}, {}", root_value.unwrap(), humn_value);
 }
